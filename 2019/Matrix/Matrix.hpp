@@ -4,7 +4,7 @@
 template <typename T>
 class Matrix {
     T** elements;
-    unsigned int sizeX,sizeY;
+    unsigned int width,height;
 public:
     Matrix();
     Matrix( int x,  int y);
@@ -17,8 +17,8 @@ public:
 
     void transpose();
     friend std::ostream& operator <<(std::ostream& o , const Matrix<T>& tmp){
-        for(int i=0;i<tmp.sizeX;i++){
-            for(int j=0;j<tmp.sizeY;j++){
+        for(int i=0;i<tmp.width;i++){
+            for(int j=0;j<tmp.height;j++){
                 o<<tmp.elements[i][j]<<" ";
             }
             o<<"\n";
@@ -38,19 +38,19 @@ private:
 };
 
 template<typename T>
-Matrix<T>::Matrix() : sizeX(2),sizeY(2){
+Matrix<T>::Matrix() : height(2),width(2){
     create();
 }
 
 template<typename T>
-Matrix<T>::Matrix( int x,  int y) : sizeX(x),sizeY(y){
+Matrix<T>::Matrix( int x,  int y) : height(x),width(y){
     create();
 }
 
 template<typename T>
 void Matrix<T>::setDefault() {
-    for(int i=0;i<sizeX;i++){
-        for(int j=0;j<sizeY;j++){
+    for(int i=0;i<height;i++){
+        for(int j=0;j<width;j++){
             elements[i][j] = T();
         }
     }
@@ -59,11 +59,11 @@ void Matrix<T>::setDefault() {
 
 template<typename T>
 Matrix<T>::Matrix(const Matrix<T> &to_copy) {
-    sizeY = to_copy.sizeY;
-    sizeX = to_copy.sizeX;
+    height = to_copy.height;
+    width = to_copy.width;
     this->create();
-    for(int i=0;i<sizeX;i++){
-        for(int j=0;j<sizeY;j++){
+    for(int i=0;i<height;i++){
+        for(int j=0;j<width;j++){
             elements[i][j] = to_copy.elements[i][j];
         }
     }
@@ -72,9 +72,9 @@ Matrix<T>::Matrix(const Matrix<T> &to_copy) {
 
 template<typename T>
 void Matrix<T>::create() {
-    elements = new T*[sizeX];
-    for(int i=0;i<sizeY;i++){
-        elements[i]= new T[sizeY];
+    elements = new T*[height];
+    for(int i=0;i<height;i++){
+        elements[i]= new T[width];
     }
 
 }
@@ -82,11 +82,11 @@ void Matrix<T>::create() {
 template<typename T>
 Matrix<T> &Matrix<T>::operator=(const Matrix& tmp) {
     if(this!=&tmp){
-        sizeY = tmp.sizeY;
-        sizeX = tmp.sizeX;
+        height = tmp.height;
+        width = tmp.width;
         this->create();
-        for(int i=0;i<sizeX;i++){
-            for(int j=0;j<sizeY;j++){
+        for(int i=0;i<height;i++){
+            for(int j=0;j<width;j++){
                 elements[i][j] = tmp.elements[i][j];
             }
         }
@@ -96,7 +96,7 @@ Matrix<T> &Matrix<T>::operator=(const Matrix& tmp) {
 
 template<typename T>
 bool Matrix<T>::isInit(unsigned int x, unsigned int y) const {
-    return x<=sizeX&&x>0&&y<=sizeY&&y>0;
+    return x<=height&&x>0&&y<=width&&y>0;
 }
 
 template<typename T>
@@ -116,32 +116,24 @@ T Matrix<T>::getAt(unsigned int x, unsigned int y) const {
 
 template<typename T>
 void Matrix<T>::transpose() {
-    Matrix<T> tmp;
-    tmp.sizeY= sizeY;
-    tmp.sizeX = sizeX;
-    tmp.create();
-    for(int i=0;i<sizeX;i++){
-        for(int j=0;j<sizeY;j++){
-            tmp.elements[i][j] = this->elements[i][j];
+
+    T** newMatrix;
+    newMatrix = new T*[width];
+    for(int i=0;i<width;i++){
+        newMatrix[i] = new T[height];
+    }
+    for(int i=0;i<width;i++){
+        for(int j=0;j<height;j++){
+            newMatrix[i][j] = elements[j][i];
         }
     }
-    for(int i=0;i<sizeY;i++){
-        delete[] elements[i];
-    }
-    delete[] elements;
-    sizeX = tmp.sizeY;
-    sizeY = tmp.sizeX;
-    this->create();
-    for(int i=0;i<tmp.sizeY;i++){
-        for(int j=0;j<tmp.sizeX;j++){
-            this->elements[j][i]= tmp.elements[i][j];
-        }
-    }
+    std::swap(height,width);
+    this->elements = newMatrix;
 }
 
 template<typename T>
 Matrix<T>::~Matrix() {
-    for(int i=0;i<sizeY;i++){
+    for(int i=0;i<height;i++){
         delete[] elements[i];
     }
     delete[] elements;
@@ -149,12 +141,14 @@ Matrix<T>::~Matrix() {
 
 template<typename T>
 void Matrix<T>::print() const {
-    for(int i=0;i<sizeX;i++){
-        for(int j=0;j<sizeY;j++){
-            std::cout<<getAt(i+1,j+1)<<" ";
+    for(int i=0;i<height;i++){
+        for(int j=0;j<width;j++){
+            std::cout<<elements[i][j]<<" ";
         }
         std::cout<<std::endl;
+
     }
+    std::cout<<std::endl;
 }
 
 
