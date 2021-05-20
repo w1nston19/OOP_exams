@@ -144,7 +144,7 @@ Matrix<T>::~Matrix() {
     for(int i=0;i<sizeY;i++){
         delete[] elements[i];
     }
-    delete[] elements;
+    delete[] elements; //sigsegv
 }
 
 template<typename T>
