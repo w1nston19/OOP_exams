@@ -1,6 +1,3 @@
-//
-// Created by Michael on 5/21/2021.
-//
 
 #include "Restaurant.h"
 
