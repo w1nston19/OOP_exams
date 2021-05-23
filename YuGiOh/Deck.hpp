@@ -5,7 +5,7 @@
 * Summer semester 2020/2021
 *
 * @author Mihail Zonev
-* @idnumber 62595
+* @idnumber *****
 * @task 1
 * @compiler gcc
 */

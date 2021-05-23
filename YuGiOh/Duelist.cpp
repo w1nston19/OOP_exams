@@ -1,6 +1,14 @@
-//
-// Created by мишо on 02/05/2021.
-//
+/**
+* Solution to homework assignment 4
+* Object Oriented Programming Course
+* Faculty of Mathematics and Informatics of Sofia University
+* Summer semester 2020/2021
+*
+* @author Mihail Zonev
+* @idnumber *****
+* @task 1
+* @compiler gcc
+*/
 
 #include <fstream>
 #include "Duelist.hpp"
